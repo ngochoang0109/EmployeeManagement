@@ -1,13 +1,13 @@
-package com.securitydatabase.manageremployee;
+package com.employeemanagement.app;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ManageremployeeApplication {
+public class EmployeeManagementApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ManageremployeeApplication.class, args);
+		SpringApplication.run(EmployeeManagementApplication.class, args);
 	}
 
 }
