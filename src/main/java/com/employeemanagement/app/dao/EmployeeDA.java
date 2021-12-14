@@ -19,12 +19,12 @@ import com.employeemanagement.app.entities.Employee;
 public class EmployeeDA {
 
 	@Autowired
-	@Qualifier("DatabaseUtility")
-	private DataSource databaseUtility;
+	@Qualifier("DatabaseConfig")
+	private DataSource databaseConfig;
 
 	public Boolean add(Employee obj) throws Exception {
 		Boolean bolResult = false;
-		try (Connection conn = databaseUtility.getConnection()) {
+		try (Connection conn = databaseConfig.getConnection()) {
 			try {
 
 				add(conn, obj);
@@ -41,7 +41,7 @@ public class EmployeeDA {
 
 	public Boolean update(Employee obj, Boolean bolIsUpdate) throws Exception {
 		Boolean bolResult = false;
-		try (Connection conn = databaseUtility.getConnection()) {
+		try (Connection conn = databaseConfig.getConnection()) {
 			try {
 				if (bolIsUpdate)
 					update(conn, obj);
@@ -58,7 +58,7 @@ public class EmployeeDA {
 
 	public Boolean delete(String strId) throws Exception {
 		Boolean bolResult = false;
-		try (Connection conn = databaseUtility.getConnection()) {
+		try (Connection conn = databaseConfig.getConnection()) {
 			try {
 				bolResult = delete(conn, strId);
 				conn.commit();
@@ -77,7 +77,7 @@ public class EmployeeDA {
 
 	public Employee getInfor(String strId, String strLocaleCcode, Boolean bolLoadRelation) throws Exception {
 		Employee obj = null;
-		try (Connection conn = databaseUtility.getConnection()) {
+		try (Connection conn = databaseConfig.getConnection()) {
 			PGobject objPGobject = new org.postgresql.util.PGobject();
 			objPGobject.setType("refcursor");
 			String callProc = "{? = call pim.pim_Employee_getinfor(?,?,?)}";
@@ -103,7 +103,7 @@ public class EmployeeDA {
 
 	public List<Employee> getList(String strKeyword, Integer intPageIndex, Integer intPageSize) throws Exception {
 		List<Employee> lst = null;
-		try (Connection conn = databaseUtility.getConnection()) {
+		try (Connection conn = databaseConfig.getConnection()) {
 			PGobject objPGobject = new org.postgresql.util.PGobject();
 			objPGobject.setType("refcursor");
 			String callProc = "{? = call pim.pim_Employee_getlist(?,?,?,?,?)}";
