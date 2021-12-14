@@ -3,6 +3,7 @@ package com.employeemanagement.app.dao;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.employeemanagement.app.entities.Employee;
+
+import oracle.jdbc.OracleTypes;
 
 @Service
 public class EmployeeDA {
@@ -101,20 +104,19 @@ public class EmployeeDA {
 		return obj;
 	}
 
-	public List<Employee> getList(String strKeyword, Integer intPageIndex, Integer intPageSize) throws Exception {
+	public List<Employee> getList(String strKeyword) throws Exception {
 		List<Employee> lst = null;
 		try (Connection conn = databaseConfig.getConnection()) {
 			PGobject objPGobject = new org.postgresql.util.PGobject();
 			objPGobject.setType("refcursor");
-			String callProc = "{? = call pim.pim_Employee_getlist(?,?,?,?,?)}";
+			String callProc = "{call Employee_getlist(?,?)}";
 			try (CallableStatement proc = conn.prepareCall(callProc)) {
-				proc.registerOutParameter(1, Types.OTHER);
-				proc.setObject(2, objPGobject);
-				proc.setObject(3, strKeyword);
-				proc.setObject(5, intPageIndex);
-				proc.setObject(6, intPageSize);
+				
+				proc.setObject(1, strKeyword);
+				proc.registerOutParameter(2, OracleTypes.CURSOR);
+				
 				proc.execute();
-				ResultSet results = (ResultSet) proc.getObject(1);
+				ResultSet results = (ResultSet) proc.getObject(2);
 				if (results.isBeforeFirst())
 					lst = new ArrayList<Employee>();
 				while (results.next()) {
@@ -174,11 +176,11 @@ public class EmployeeDA {
 	private Employee parseInfor(ResultSet results, boolean bolIsInfor) throws Exception {
 		Employee obj = new Employee();
 		obj.setId(results.getString("id"));
-		obj.setEmail(results.getString("code"));
+		obj.setEmail(results.getString("email"));
 		obj.setName(results.getString("Employee_name"));
-		obj.setDepartmentId(results.getString("sort_order"));
-		obj.setTaxId(results.getString("is_activated"));
-		obj.setDateOfBirth(results.getString("sort_order"));
+		obj.setDepartmentId(results.getString("departmentId"));
+		obj.setTaxId(results.getString("taxCode"));
+		obj.setDateOfBirth((Timestamp) results.getObject("dateOfBirth"));
 		return obj;
 	}
 

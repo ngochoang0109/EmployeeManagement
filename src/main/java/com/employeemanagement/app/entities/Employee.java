@@ -1,9 +1,11 @@
 package com.employeemanagement.app.entities;
 
+import java.sql.Timestamp;
+
 public class Employee {
 	private String Id;
 	private String Name;
-	private String DateOfBirth;
+	private Timestamp DateOfBirth;
 	private String Email;
 	private String DepartmentId;
 	private String TaxId;
@@ -24,11 +26,11 @@ public class Employee {
 		Name = name;
 	}
 
-	public String getDateOfBirth() {
+	public Timestamp getDateOfBirth() {
 		return DateOfBirth;
 	}
 
-	public void setDateOfBirth(String dateOfBirth) {
+	public void setDateOfBirth(Timestamp dateOfBirth) {
 		DateOfBirth = dateOfBirth;
 	}
 
