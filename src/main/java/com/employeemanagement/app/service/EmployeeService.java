@@ -19,7 +19,7 @@ public class EmployeeService {
 	public ApiRes<Object> getlist(EmployeeReq req) {
 		ApiRes<Object> apiRes = new ApiRes<Object>();
 		try {
-			List<Employee> employees = employeeDA.getList(null, null, null);
+			List<Employee> employees = employeeDA.getList("");
 			apiRes.setObject(employees);
 		} catch (Exception e) {
 			apiRes.setError(true);
