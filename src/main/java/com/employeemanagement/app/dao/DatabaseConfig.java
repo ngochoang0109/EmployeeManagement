@@ -8,11 +8,18 @@ import org.springframework.context.annotation.Configuration;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Configuration
 public class DatabaseConfig {
 
-	public static DataSource dataSource(String username, String password) {
+	public static Map<String, DataSource> dataSources = new HashMap<>();
 
+	public static DataSource dataSource(String username, String password) {
+		if(dataSources.get(username+password)!=null){
+			return dataSources.get(username+password);
+		}
 		HikariConfig config = new HikariConfig();
 		config.setDriverClassName(Util.driverClassName);
 		config.setJdbcUrl(Util.jdbcUrl);
@@ -26,7 +33,8 @@ public class DatabaseConfig {
 		config.setPoolName(Util.poolName);
 		config.setAutoCommit(Util.autoCommit);
 		config.setLeakDetectionThreshold(Util.leakDetectionThreshold);
-
-		return new HikariDataSource(config);
+		DataSource dataSource= new HikariDataSource(config);
+		dataSources.put(username+password,dataSource);
+		return dataSource;
 	}
 }
