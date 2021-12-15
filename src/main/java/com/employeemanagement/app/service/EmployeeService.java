@@ -32,9 +32,7 @@ public class EmployeeService {
 	}
 
 	public ResponseEntity<Object> login(LoginReq req){
-		DatabaseConfig.username=req.getUsername();
-		DatabaseConfig.password = req.getPassword();
-		if(employeeDA.checkConnect())
+		if(employeeDA.connect(req))
 			return ResponseEntity.ok("Connect");
 		else return ResponseEntity.status(400).body("Kiem tra lai tai khoan va mat khau");
 	}

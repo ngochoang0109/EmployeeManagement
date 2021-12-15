@@ -3,6 +3,8 @@ package com.employeemanagement.app.dao;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.employeemanagement.app.request.LoginReq;
 import org.postgresql.util.PGobject;
 import javax.sql.DataSource;
 
@@ -18,17 +20,7 @@ import oracle.jdbc.OracleTypes;
 public class EmployeeDA {
 
 	private DataSource databaseConfig;
-	public Boolean checkConnect()  {
-		Boolean bolResult = false;
-		try  {
-			databaseConfig = DatabaseConfig.dataSource();
-		//	Connection conn = databaseConfig.getConnection();
-			bolResult = true;
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-		return bolResult;
-	}
+
 
 	public Boolean add(Employee obj) throws Exception {
 		Boolean bolResult = false;
@@ -189,4 +181,14 @@ public class EmployeeDA {
 		return obj;
 	}
 
+	public boolean connect(LoginReq req) {
+		Boolean bolResult = false;
+			try  {
+				databaseConfig = DatabaseConfig.dataSource(req.getUsername(), req.getPassword());
+				bolResult = true;
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		return bolResult;
+	}
 }
