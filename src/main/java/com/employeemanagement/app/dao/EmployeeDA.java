@@ -1,10 +1,6 @@
 package com.employeemanagement.app.dao;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.sql.Types;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import org.postgresql.util.PGobject;
@@ -21,9 +17,18 @@ import oracle.jdbc.OracleTypes;
 @Service
 public class EmployeeDA {
 
-	@Autowired
-	@Qualifier("DatabaseConfig")
 	private DataSource databaseConfig;
+	public Boolean checkConnect()  {
+		Boolean bolResult = false;
+		try  {
+			databaseConfig = DatabaseConfig.dataSource();
+		//	Connection conn = databaseConfig.getConnection();
+			bolResult = true;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return bolResult;
+	}
 
 	public Boolean add(Employee obj) throws Exception {
 		Boolean bolResult = false;
