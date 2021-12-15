@@ -112,7 +112,7 @@ public class EmployeeDA {
 			String callProc = "{call Employee_getlist(?,?)}";
 			try (CallableStatement proc = conn.prepareCall(callProc)) {
 				
-				proc.setObject(1, strKeyword);
+				proc.setString(1, strKeyword);
 				proc.registerOutParameter(2, OracleTypes.CURSOR);
 				
 				proc.execute();
@@ -177,10 +177,10 @@ public class EmployeeDA {
 		Employee obj = new Employee();
 		obj.setId(results.getString("id"));
 		obj.setEmail(results.getString("email"));
-		obj.setName(results.getString("Employee_name"));
+		obj.setName(results.getString("name"));
 		obj.setDepartmentId(results.getString("departmentId"));
 		obj.setTaxId(results.getString("taxCode"));
-		obj.setDateOfBirth((Timestamp) results.getObject("dateOfBirth"));
+		//obj.setDateOfBirth((Timestamp) results.getObject("dateOfBirth"));
 		return obj;
 	}
 
