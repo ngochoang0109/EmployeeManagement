@@ -15,24 +15,25 @@ import javax.servlet.http.HttpSession;
 @RestController
 @RequestMapping("/api/employee")
 public class EmployeeController {
-	@Autowired
-	private EmployeeService objBL;
+    @Autowired
+    private EmployeeService objBL;
 
-	@PostMapping("")
-	public ResponseEntity<Object> getList( HttpSession session) throws Exception {
-		if(!EmployeeDA.GetDataSource(session)){
-			return ResponseEntity.status(400).body("Bad request");
-		}
-		return ResponseEntity.ok(objBL.getlist());
-	}
+    @PostMapping("")
+    public ResponseEntity<Object> getList(HttpSession session) throws Exception {
+        if (!EmployeeDA.GetDataSource(session)) {
+            return ResponseEntity.status(400).body("Bad request");
+        }
+        return ResponseEntity.ok(objBL.getlist());
+    }
 
-	@PostMapping("login")
-	public ResponseEntity<Object> login (@RequestBody LoginReq req, HttpSession session){
+    @PostMapping("login")
+    public ResponseEntity<Object> login(@RequestBody LoginReq req, HttpSession session) {
 
-		return objBL.login(req, session);
-	}
-	@GetMapping("logout")
-	public ResponseEntity<Object> logout (HttpSession session){
-		return objBL.logout(session);
-	}
+        return objBL.login(req, session);
+    }
+
+    @GetMapping("logout")
+    public ResponseEntity<Object> logout(HttpSession session) {
+        return objBL.logout(session);
+    }
 }
