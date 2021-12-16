@@ -13,13 +13,16 @@ import com.employeemanagement.app.entities.Employee;
 import com.employeemanagement.app.helpers.ApiRes;
 import com.employeemanagement.app.request.EmployeeReq;
 
+import javax.servlet.http.HttpSession;
+import javax.sql.DataSource;
+
 @Service
 public class EmployeeService {
 
 	@Autowired
 	private EmployeeDA employeeDA;
 
-	public ApiRes<Object> getlist(EmployeeReq req) {
+	public ApiRes<Object> getlist() {
 		ApiRes<Object> apiRes = new ApiRes<Object>();
 		try {
 			List<Employee> employees = employeeDA.getList("");
@@ -31,10 +34,16 @@ public class EmployeeService {
 		return apiRes;
 	}
 
-	public ResponseEntity<Object> login(LoginReq req){
-		if(employeeDA.connect(req))
-			return ResponseEntity.ok("Connect");
-		else return ResponseEntity.status(400).body("Kiem tra lai tai khoan va mat khau");
+	public ResponseEntity<Object> login(LoginReq req, HttpSession session){
+		DataSource dataSource = employeeDA.connect(req);
+		if(dataSource==null)
+			return ResponseEntity.status(401).body("Kiem tra lai tai khoan hoac mat khau");
+		session.setAttribute("datasource", dataSource);
+		return ResponseEntity.ok().body("Connect success");
 	}
 
+	public ResponseEntity<Object> logout(HttpSession session) {
+		session.removeAttribute("dataSource");
+		return ResponseEntity.ok().body("logout success");
+	}
 }

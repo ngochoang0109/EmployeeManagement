@@ -14,12 +14,12 @@ import java.util.Map;
 @Configuration
 public class DatabaseConfig {
 
-	public static Map<String, DataSource> dataSources = new HashMap<>();
+	// public static Map<String, DataSource> dataSources = new HashMap<>();
 
 	public static DataSource dataSource(String username, String password) {
-		if(dataSources.get(username+password)!=null){
+	/*	if(dataSources.get(username+password)!=null){
 			return dataSources.get(username+password);
-		}
+		}*/
 		HikariConfig config = new HikariConfig();
 		config.setDriverClassName(Util.driverClassName);
 		config.setJdbcUrl(Util.jdbcUrl);
@@ -34,7 +34,7 @@ public class DatabaseConfig {
 		config.setAutoCommit(Util.autoCommit);
 		config.setLeakDetectionThreshold(Util.leakDetectionThreshold);
 		DataSource dataSource= new HikariDataSource(config);
-		dataSources.put(username+password,dataSource);
+	//	dataSources.put(username+password,dataSource);
 		return dataSource;
 	}
 }

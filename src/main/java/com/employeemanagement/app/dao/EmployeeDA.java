@@ -6,10 +6,10 @@ import java.util.List;
 
 import com.employeemanagement.app.request.LoginReq;
 import org.postgresql.util.PGobject;
+
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.employeemanagement.app.entities.Employee;
@@ -19,8 +19,14 @@ import oracle.jdbc.OracleTypes;
 @Service
 public class EmployeeDA {
 
-	private DataSource databaseConfig;
+	private static DataSource databaseConfig;
 
+	public static boolean GetDataSource(HttpSession session){
+		databaseConfig = (DataSource) session.getAttribute("datasource");
+		if(databaseConfig==null)
+			return false;
+		return true;
+	}
 
 	public Boolean add(Employee obj) throws Exception {
 		Boolean bolResult = false;
@@ -181,14 +187,12 @@ public class EmployeeDA {
 		return obj;
 	}
 
-	public boolean connect(LoginReq req) {
-		Boolean bolResult = false;
+	public DataSource connect(LoginReq req) {
 			try  {
-				databaseConfig = DatabaseConfig.dataSource(req.getUsername(), req.getPassword());
-				bolResult = true;
+				return DatabaseConfig.dataSource(req.getUsername(), req.getPassword());
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
-		return bolResult;
+		return null;
 	}
 }
