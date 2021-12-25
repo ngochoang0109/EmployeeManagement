@@ -112,7 +112,7 @@ public class EmployeeDA {
         try (Connection conn = databaseConfig.getConnection()) {
             PGobject objPGobject = new org.postgresql.util.PGobject();
             objPGobject.setType("refcursor");
-            String callProc = "{call Employee_getlist(?,?)}";
+            String callProc = "{call DBSECURITYGR06.Employee_getlist(?,?)}";
             try (CallableStatement proc = conn.prepareCall(callProc)) {
 
                 proc.setString(1, strKeyword);
@@ -144,7 +144,7 @@ public class EmployeeDA {
             proc.setObject(3, obj.getDateOfBirth());
             proc.setObject(4, obj.getName());
             proc.setObject(5, obj.getEmail());
-            proc.setObject(6, obj.getTaxId());
+            proc.setObject(6, obj.getTaxCode());
             proc.setObject(7, obj.getDepartmentId());
             proc.execute();
             obj.setId(proc.getObject(1).toString());
@@ -159,7 +159,7 @@ public class EmployeeDA {
             proc.setObject(3, obj.getDateOfBirth());
             proc.setObject(4, obj.getName());
             proc.setObject(5, obj.getEmail());
-            proc.setObject(6, obj.getTaxId());
+            proc.setObject(6, obj.getTaxCode());
             proc.setObject(7, obj.getDepartmentId());
             proc.execute();
             return Boolean.parseBoolean(proc.getObject(1).toString());
@@ -181,8 +181,10 @@ public class EmployeeDA {
         obj.setId(results.getString("id"));
         obj.setEmail(results.getString("email"));
         obj.setName(results.getString("name"));
-        obj.setDepartmentId(results.getString("departmentId"));
-        obj.setTaxId(results.getString("taxCode"));
+        obj.setDepartmentId(results.getString("departmentid"));
+        obj.setTaxCode(results.getString("taxcode"));
+        obj.setManagerId(results.getString("managerid"));
+        
         //obj.setDateOfBirth((Timestamp) results.getObject("dateOfBirth"));
         return obj;
     }

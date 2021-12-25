@@ -16,4 +16,9 @@ public class AdminController {
 		return "redirect:/signin";
 	}
 	
+	@GetMapping("/admin/employee")
+	public String Employee(Model model) {
+		return "admin/EmployeeManagement";
+	}
+	
 }

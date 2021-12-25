@@ -13,6 +13,7 @@ import com.employeemanagement.app.entities.Employee;
 import com.employeemanagement.app.helpers.ApiRes;
 import com.employeemanagement.app.helpers.ValidationHelper.Result;
 import com.employeemanagement.app.request.EmployeeReq;
+import com.employeemanagement.app.request.FilterReq;
 
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
@@ -26,10 +27,10 @@ public class EmployeeService {
 	@Autowired
 	private EmployeeDA employeeDA;
 
-	public ApiRes<Object> getlist() {
+	public ApiRes<Object> getlist(FilterReq req) {
 		ApiRes<Object> apiRes = new ApiRes<Object>();
 		try {
-			List<Employee> employees = employeeDA.getList("");
+			List<Employee> employees = employeeDA.getList(req.getKeyword());
 			apiRes.setObject(employees);
 		} catch (Exception e) {
 			apiRes.setError(true);
