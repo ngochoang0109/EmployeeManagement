@@ -9,6 +9,7 @@ public class Employee {
 	private String Email;
 	private String DepartmentId;
 	private String TaxCode;
+	private String Salary;
 	private String ManagerId;
 
 	public String getId() {
@@ -66,4 +67,14 @@ public class Employee {
 	public void setManagerId(String managerId) {
 		ManagerId = managerId;
 	}
+
+	public String getSalary() {
+		return Salary;
+	}
+
+	public void setSalary(String salary) {
+		Salary = salary;
+	}
+	
+	
 }

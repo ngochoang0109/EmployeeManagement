@@ -39,6 +39,18 @@ public class EmployeeService {
 		return apiRes;
 	}
 
+	public ApiRes<Object> add(EmployeeReq req) {
+		ApiRes<Object> apiRes = new ApiRes<Object>();
+		try {
+			employeeDA.add(req);
+			apiRes.setObject(true);
+		} catch (Exception e) {
+			apiRes.setError(true);
+			apiRes.setErrorReason(e.getMessage());
+		}
+		return apiRes;
+	}
+
 	public ApiRes<Object> login(LoginReq req, HttpSession session) {
 		ApiRes<Object> apiRes = new ApiRes<Object>();
 		try {

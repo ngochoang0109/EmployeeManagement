@@ -4,7 +4,7 @@ $(document).ready(function() {
 	ajaxGet(1);
 
 	function ajaxGet(page) {
-		var data = { keyword:""};
+		var data = { keyword: "" };
 		page = 1;
 		$.ajax({
 			type: "POST",
@@ -12,11 +12,10 @@ $(document).ready(function() {
 			contentType: "application/json",
 			url: "http://localhost:8080/api/employee/getlist",
 			success: function(result) {
-				if(result.error==true)
-				{
+				if (result.error == true) {
 					alert(result.toastMessage);
 				}
-				
+
 				console.log(result)
 				$.each(result.object, function(i, emp) {
 					var taiKhoanRow = '<tr>' +
@@ -26,7 +25,8 @@ $(document).ready(function() {
 						'<td>' + emp.dateOfBirth + '</td>' +
 						'<td>' + emp.taxCode + '</td>' +
 						'<td>' + emp.departmentId + '</td>' +
-						'<td>' + emp.managerId + '</td>';
+						'<td>' + emp.managerId + '</td>' +
+						'<td>' + emp.salary + '</td>';
 					taiKhoanRow += '</td>' +
 						'<td width="0%">' + '<input type="hidden" id="idTaiKhoan" value=' + emp.id + '>' + '</td>' +
 						//					                  '<td><button class="btn btn-primary btnCapNhat" >Cập nhật</button></td>' + 
@@ -35,19 +35,19 @@ $(document).ready(function() {
 
 				});
 
-			/*	if (result.totalPages > 1) {
-					for (var numberPage = 1; numberPage <= result.totalPages; numberPage++) {
-						var li = '<li class="page-item "><a class="pageNumber">' + numberPage + '</a></li>';
-						$('.pagination').append(li);
-					};
-
-					// active page pagination
-					$(".pageNumber").each(function(index) {
-						if ($(this).text() == page) {
-							$(this).parent().removeClass().addClass("page-item active");
-						}
-					});
-				};*/
+				/*	if (result.totalPages > 1) {
+						for (var numberPage = 1; numberPage <= result.totalPages; numberPage++) {
+							var li = '<li class="page-item "><a class="pageNumber">' + numberPage + '</a></li>';
+							$('.pagination').append(li);
+						};
+	
+						// active page pagination
+						$(".pageNumber").each(function(index) {
+							if ($(this).text() == page) {
+								$(this).parent().removeClass().addClass("page-item active");
+							}
+						});
+					};*/
 			},
 			error: function(e) {
 				alert("Error: ", e);
@@ -62,7 +62,7 @@ $(document).ready(function() {
 	});
 
 	function ajaxLogout() {
-		var data ={};
+		var data = {};
 		// do post
 		$.ajax({
 			async: false,
@@ -72,7 +72,7 @@ $(document).ready(function() {
 			enctype: 'application/json',
 			success: function(response) {
 				if (response.object == true) {
-				
+
 					window.location.href = "/"
 				}
 				else {
@@ -96,20 +96,20 @@ $(document).ready(function() {
 	});
 
 	// click thêm tài khoản
-	$(document).on('click', '.btnThemTaiKhoan', function(event) {
-		event.preventDefault();
-		$("#taiKhoanModal").modal();
+	$(document).on('click', '.btnThemNhanVien', function(event) {
+		
+		$("#nhanVienModal").modal();
 	});
 
 	// xác nhận thêm tài khoản
 	$(document).on('click', '#btnSubmit', function(event) {
-		event.preventDefault();
-		ajaxPostTaiKhoan();
+		
+		ajaxAddNhanVien();
 		resetData();
 	});
 
-	function ajaxPostTaiKhoan() {
-		var data = JSON.stringify($('.taiKhoanForm').serializeJSON());
+	function ajaxAddNhanVien() {
+		var data = JSON.stringify($('.nhanVienForm').serializeJSON());
 		console.log(data);
 
 		// do post
@@ -117,12 +117,11 @@ $(document).ready(function() {
 			async: false,
 			type: "POST",
 			contentType: "application/json",
-			url: "http://localhost:8080/api/admin/tai-khoan/save",
-			enctype: 'multipart/form-data',
+			url: "http://localhost:8080/api/employee/add",
 			data: data,
 			success: function(response) {
 				if (response.status == "success") {
-					$('#taiKhoanModal').modal('hide');
+					$('#nhanVienModal').modal('hide');
 					alert("Thêm thành công");
 				} else {
 					$('input').next().remove();
