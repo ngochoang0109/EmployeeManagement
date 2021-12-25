@@ -1,6 +1,7 @@
 package com.employeemanagement.app.controller;
 
 import com.employeemanagement.app.dao.EmployeeDA;
+import com.employeemanagement.app.request.EmployeeReq;
 import com.employeemanagement.app.request.FilterReq;
 import com.employeemanagement.app.request.LoginReq;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,14 @@ public class EmployeeController {
 			return ResponseEntity.status(400).body("Bad request");
 		}
 		return ResponseEntity.ok(objBL.getlist(req));
+	}
+
+	@RequestMapping(value = "/add", method = RequestMethod.POST, consumes = "application/json", produces = "application/json; charset=utf-8")
+	public ResponseEntity<Object> add(HttpSession session, @RequestBody EmployeeReq req) throws Exception {
+		if (!EmployeeDA.GetDataSource(session)) {
+			return ResponseEntity.status(400).body("Bad request");
+		}
+		return ResponseEntity.ok(objBL.add(req));
 	}
 
 	@PostMapping("login")
