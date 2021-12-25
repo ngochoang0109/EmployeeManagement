@@ -7,34 +7,34 @@ $(document).ready(function() {
 
 
 	// xác nhận thêm tài khoản
-	$(document).on('click', '#btnSubmit', function(event) {
+	$(document).on('click', '#btnLogout', function(event) {
 		event.preventDefault();
-		ajaxPostTaiKhoan();
+		ajaxLogout();
 	});
 
-	function ajaxPostTaiKhoan() {
+	function ajaxLogout() {
 		var data = JSON.stringify($('.login-form').serializeJSON());
 		console.log(data);
 
 		// do post
 		$.ajax({
 			async: false,
-			type: "POST",
+			type: "GET",
 			contentType: "application/json",
-			url: "http://localhost:8080/api/employee/login",
+			url: "http://localhost:8080/api/employee/logout",
 			enctype: 'multipart/form-data',
 			data: data,
 			success: function(response) {
 				if (response.object == true) {
-					alert("Đăng nhập thành công");
-					window.location.href = "/admin/employee"
+				
+					window.location.href = "/"
 				}
 				else {
 					console.log("ERROR: ", response.toastMessage);
 				}
 			},
 			error: function(e) {
-				alert("Error!",e)
+				alert("Error!")
 				console.log("ERROR: ", e);
 			}
 		});
