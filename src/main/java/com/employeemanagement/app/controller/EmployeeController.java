@@ -31,6 +31,6 @@ public class EmployeeController {
 
 	@GetMapping("logout")
 	public ResponseEntity<Object> logout(HttpSession session) {
-		return objBL.logout(session);
+		return ResponseEntity.ok(objBL.logout(session));
 	}
 }

@@ -69,56 +69,41 @@
 					<div class="modal-dialog" role="document">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h5 class="modal-title" id="exampleModalLabel">Tạo mới tài
-									khoản</h5>
+								<h5 class="modal-title" id="exampleModalLabel">Thêm mới nhân viên</h5>
 								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 									<span aria-hidden="true">&times;</span>
 								</button>
 							</div>
 							<div class="modal-body">
-								<!-- 								<div class="form-group">
-									<input type="hidden" class="form-control" name="id" />
-								</div> -->
+								<div class="form-group">
+									<label for="name">Name</label> <input type="name" class="form-control" name="name"
+										required />
+								</div>
 								<div class="form-group">
 									<label for="name">Email</label> <input type="email" class="form-control"
 										name="email" required />
 								</div>
 								<div class="form-group">
-									<label for="name">Mật khẩu:(8-32 ký tự)</label> <input type="password"
-										class="form-control" name="password" required />
+									<label for="name">Ngày sinh</label> <input type="password" class="form-control"
+										name="password" required />
 								</div>
 								<div class="form-group">
-									<label for="name">Nhắc lại mật khẩu:</label> <input type="password"
-										class="form-control" name="confirmPassword" required />
+									<label for="name">Mã thuế</label> <input type="taxcode" class="form-control"
+										name="taxcode" required />
 								</div>
-
 								<div class="form-group">
-									<label for="name">Chọn vai trò:</label>
+									<label for="name">Chọn Mã phòng:</label>
 
 									<th:block th:each="role : ${listRole}">
 
 										<label class="radio-inline">
-											<input type="radio" name="vaiTro" th:value="${role.value}"
-												th:text="${role}" checked="checked">
+											<input type="radio" name="vaiTro" th:value="${role.value}" th:text="${role}"
+												checked="checked">
 
 										</label>
 									</th:block>
 
 								</div>
-
-								<div class="form-group">
-									<label for="name">Họ tên:</label> <input type="text" class="form-control"
-										name="hoTen" required />
-								</div>
-								<div class="form-group">
-									<label for="name">Số điện thoại:</label> <input type="text" class="form-control"
-										name="sdt" required />
-								</div>
-								<div class="form-group">
-									<label for="name">Địa chỉ:</label> <input type="text" class="form-control"
-										name="diaChi" required />
-								</div>
-
 
 								<div class="modal-footer">
 									<button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>

@@ -56,6 +56,36 @@ $(document).ready(function() {
 		});
 	};
 
+	$(document).on('click', '#btnLogout', function(event) {
+		event.preventDefault();
+		ajaxLogout();
+	});
+
+	function ajaxLogout() {
+		var data ={};
+		// do post
+		$.ajax({
+			async: false,
+			type: "GET",
+			contentType: "application/json",
+			url: "http://localhost:8080/api/employee/logout",
+			enctype: 'application/json',
+			success: function(response) {
+				if (response.object == true) {
+				
+					window.location.href = "/"
+				}
+				else {
+					alert("ERROR: ", response.toastMessage);
+				}
+			},
+			error: function(e) {
+				alert("Error!")
+				console.log("ERROR: ", e);
+			}
+		});
+
+	}
 	// event khi click vào dropdown chọn danh mục thêm sản phẩm
 	$('#vaiTro').mouseup(function() {
 		var open = $(this).data("isopen");

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 public class ValidationHelper {
 
 	public enum Result {
-		valid, login_fail, duplicate_code, duplicate_variant, empty_code, invalid_code
+		valid, login_fail,logut_fail, duplicate_code, duplicate_variant, empty_code, invalid_code
 	}
 
 	public static Boolean isNullorEmpty(String str) {

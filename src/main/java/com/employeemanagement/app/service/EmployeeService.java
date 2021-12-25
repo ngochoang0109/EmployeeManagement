@@ -57,8 +57,15 @@ public class EmployeeService {
 
 	}
 
-	public ResponseEntity<Object> logout(HttpSession session) {
-		session.removeAttribute("dataSource");
-		return ResponseEntity.ok().body("logout success");
+	public ApiRes<Object> logout(HttpSession session) {
+		ApiRes<Object> apiRes = new ApiRes<Object>();
+		try {
+			session.removeAttribute("dataSource");
+			apiRes.setObject(true);
+			apiRes.setError(false);
+		} catch (Exception e) {
+			apiRes = handlerBL.translateError(Result.login_fail, "Đăng xuất thất bại");
+		}
+		return apiRes;
 	}
 }
