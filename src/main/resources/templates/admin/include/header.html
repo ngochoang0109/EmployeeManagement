@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+
+<body>
+
+	<div th:fragment="header">
+		<nav style="background:#2F4F4F" class="navbar  navbar-fixed-top">
+			<!-- header section strats -->
+
+			<div style="background:#2F4F4F" class="container">
+				<nav  style="background:#2F4F4F" class="navbar navbar-expand-lg custom_nav-container ">
+					<a class="navbar-brand" th:href="@{/admin}">
+
+						<span>
+							GROUP 6
+						</span>
+					</a>
+
+					<div class="collapse navbar-collapse" id="navbarSupportedContent">
+						<div class="d-flex ml-auto flex-column flex-lg-row align-items-center">
+							<ul class="nav navbar-nav navbar-right">
+
+
+								<li>
+									<a th:href="@{/signout}"><span class="glyphicon glyphicon-log-out"></span>
+										Đăng xuất</a>
+								</li>
+
+							</ul>
+
+
+						</div>
+				</nav>
+			</div>
+		</nav>
+	</div>
+	</div>
+</body>
+
+</html>

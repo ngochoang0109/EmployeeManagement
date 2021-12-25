@@ -27,7 +27,7 @@ $(document).ready(function() {
 			success: function(response) {
 				if (response.object == true) {
 					alert("Success");
-					window.location.href = "/admin"
+					window.location.href = "/admin/employee"
 				}
 				else {
 					console.log("ERROR: ", response.toastMessage);

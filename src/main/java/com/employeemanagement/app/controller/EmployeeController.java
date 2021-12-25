@@ -1,6 +1,7 @@
 package com.employeemanagement.app.controller;
 
 import com.employeemanagement.app.dao.EmployeeDA;
+import com.employeemanagement.app.request.FilterReq;
 import com.employeemanagement.app.request.LoginReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +16,12 @@ public class EmployeeController {
 	@Autowired
 	private EmployeeService objBL;
 
-	@PostMapping("")
-	public ResponseEntity<Object> getList(HttpSession session) throws Exception {
+	@RequestMapping(value = "/getlist", method = RequestMethod.POST, consumes = "application/json", produces = "application/json; charset=utf-8")
+	public ResponseEntity<Object> getList(HttpSession session, @RequestBody FilterReq req) throws Exception {
 		if (!EmployeeDA.GetDataSource(session)) {
 			return ResponseEntity.status(400).body("Bad request");
 		}
-		return ResponseEntity.ok(objBL.getlist());
+		return ResponseEntity.ok(objBL.getlist(req));
 	}
 
 	@PostMapping("login")
