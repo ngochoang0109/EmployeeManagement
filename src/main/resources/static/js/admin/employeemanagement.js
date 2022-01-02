@@ -15,7 +15,7 @@ $(document).ready(function() {
 				if (result.error == true) {
 					alert(result.toastMessage);
 				}
-
+				else{
 				console.log(result)
 				$.each(result.object, function(i, emp) {
 					var taiKhoanRow = '<tr>' +
@@ -34,6 +34,7 @@ $(document).ready(function() {
 					$('.taiKhoanTable tbody').append(taiKhoanRow);
 
 				});
+				}
 
 				/*	if (result.totalPages > 1) {
 						for (var numberPage = 1; numberPage <= result.totalPages; numberPage++) {
@@ -50,7 +51,7 @@ $(document).ready(function() {
 					};*/
 			},
 			error: function(e) {
-				alert("Error: ", e);
+				alert("Lỗi rồi: ", e);
 				console.log("Error", e);
 			}
 		});
@@ -86,15 +87,7 @@ $(document).ready(function() {
 		});
 
 	}
-	// event khi click vào dropdown chọn danh mục thêm sản phẩm
-	$('#vaiTro').mouseup(function() {
-		var open = $(this).data("isopen");
-		if (open) {
-			resetData();
-		}
-		$(this).data("isopen", !open);
-	});
-
+	
 	// click thêm tài khoản
 	$(document).on('click', '.btnThemNhanVien', function(event) {
 		
@@ -102,10 +95,10 @@ $(document).ready(function() {
 	});
 
 	// xác nhận thêm tài khoản
-	$(document).on('click', '#btnSubmit', function(event) {
+	$(document).on('click', '#btnAddSubmit', function(event) {
 		
 		ajaxAddNhanVien();
-		resetData();
+		ajaxGet(1);
 	});
 
 	function ajaxAddNhanVien() {
@@ -124,12 +117,7 @@ $(document).ready(function() {
 					$('#nhanVienModal').modal('hide');
 					alert("Thêm thành công");
 				} else {
-					$('input').next().remove();
-					$.each(response.errorMessages, function(key, value) {
-						if (key != "id") {
-							$('input[name=' + key + ']').after('<span class="error">' + value + '</span>');
-						};
-					});
+					alert(response.errorReason);
 				}
 
 			},
@@ -162,17 +150,10 @@ $(document).ready(function() {
 
 	// event khi ẩn modal form
 	$('#taiKhoanModal').on('hidden.bs.modal', function(e) {
-		e.preventDefault();
-		$('.taiKhoanForm input').next().remove();
+		/*e.preventDefault();
+		$('.taiKhoanForm input').next().remove();*/
 	});
 
-	// reset table after post, put, filter
-	function resetData() {
-		var page = $('li.active').children().text();
-		$('.taiKhoanTable tbody tr').remove();
-		$('.pagination li').remove();
-		ajaxGet(page);
-	};
 
 	(function($) {
 		$.fn.serializeFormJSON = function() {
@@ -193,11 +174,4 @@ $(document).ready(function() {
 		};
 	})(jQuery);
 
-	// remove element by class name
-	function removeElementsByClass(className) {
-		var elements = document.getElementsByClassName(className);
-		while (elements.length > 0) {
-			elements[0].parentNode.removeChild(elements[0]);
-		}
-	}
 });

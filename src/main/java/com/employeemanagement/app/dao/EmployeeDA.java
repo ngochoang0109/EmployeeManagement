@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import com.employeemanagement.app.entities.Employee;
 
 import oracle.jdbc.OracleTypes;
+import oracle.sql.TIMESTAMP;
 
 @Service
 public class EmployeeDA {
@@ -137,7 +138,7 @@ public class EmployeeDA {
 	}
 
 	private void add(Connection conn, Employee obj) throws Exception {
-		String callProc = "{call DBSECURITYGR06.Employee_add(?,?,?,?,?,?)}";
+		String callProc = "{call DBSECURITYGR06.Employee_add(?,?,?,?,?,?,?)}";
 		try (CallableStatement proc = conn.prepareCall(callProc)) {
 
 			proc.setObject(1, obj.getName());
@@ -146,6 +147,7 @@ public class EmployeeDA {
 			proc.setObject(4, obj.getSalary());
 			proc.setObject(5, obj.getEmail());
 			proc.setObject(6, obj.getManagerId());
+			proc.setObject(7, obj.getDateOfBirth());
 			proc.execute();
 		}
 	}
@@ -154,7 +156,7 @@ public class EmployeeDA {
 		String callProc = "{? = call pim.pim_Employee_upd(?,?,?)}";
 		try (CallableStatement proc = conn.prepareCall(callProc)) {
 			proc.registerOutParameter(1, Types.BOOLEAN);
-			proc.setObject(2, obj.getId());
+			proc.setObject(2, obj.getName());
 			proc.setObject(3, obj.getDateOfBirth());
 			proc.setObject(4, obj.getName());
 			proc.setObject(5, obj.getEmail());
@@ -177,15 +179,14 @@ public class EmployeeDA {
 
 	private Employee parseInfor(ResultSet results, boolean bolIsInfor) throws Exception {
 		Employee obj = new Employee();
-		obj.setId(results.getString("id"));
+		obj.setId(results.getInt("id"));
 		obj.setEmail(results.getString("email"));
 		obj.setName(results.getString("name"));
 		obj.setDepartmentId(results.getString("departmentid"));
 		obj.setTaxCode(results.getString("taxcode"));
-		obj.setManagerId(results.getString("managerid"));
-		obj.setSalary(results.getString("salary"));
-		
-		// obj.setDateOfBirth((Timestamp) results.getObject("dateOfBirth"));
+		obj.setManagerId(results.getInt("managerid"));
+		obj.setSalary(results.getInt("salary"));
+		obj.setDateOfBirth(results.getString("dateofbirth"));
 		return obj;
 	}
 
