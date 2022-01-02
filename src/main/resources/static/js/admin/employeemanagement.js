@@ -120,7 +120,7 @@ $(document).ready(function() {
 			url: "http://localhost:8080/api/employee/add",
 			data: data,
 			success: function(response) {
-				if (response.status == "success") {
+				if (response.object === true) {
 					$('#nhanVienModal').modal('hide');
 					alert("Thêm thành công");
 				} else {

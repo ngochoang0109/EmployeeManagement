@@ -17,7 +17,9 @@ public class EmployeeController {
 	@Autowired
 	private EmployeeService objBL;
 
-	@RequestMapping(value = "/getlist", method = RequestMethod.POST, consumes = "application/json", produces = "application/json; charset=utf-8")
+	@RequestMapping(value = "/getlist", method = RequestMethod.POST, 
+			consumes = "application/json", 
+			produces = "application/json; charset=utf-8")
 	public ResponseEntity<Object> getList(HttpSession session, @RequestBody FilterReq req) throws Exception {
 		if (!EmployeeDA.GetDataSource(session)) {
 			return ResponseEntity.status(400).body("Bad request");
