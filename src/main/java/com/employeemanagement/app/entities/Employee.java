@@ -1,22 +1,22 @@
 package com.employeemanagement.app.entities;
 
-import java.sql.Timestamp;
+import oracle.sql.TIMESTAMP;
 
 public class Employee {
-	private String Id;
+	private Integer Id;
 	private String Name;
-	private Timestamp DateOfBirth;
+	private String DateOfBirth;
 	private String Email;
 	private String DepartmentId;
 	private String TaxCode;
-	private String Salary;
-	private String ManagerId;
+	private Integer Salary;
+	private Integer ManagerId;
 
-	public String getId() {
+	public Integer getId() {
 		return Id;
 	}
 
-	public void setId(String id) {
+	public void setId(Integer id) {
 		Id = id;
 	}
 
@@ -28,11 +28,11 @@ public class Employee {
 		Name = name;
 	}
 
-	public Timestamp getDateOfBirth() {
+	public String getDateOfBirth() {
 		return DateOfBirth;
 	}
 
-	public void setDateOfBirth(Timestamp dateOfBirth) {
+	public void setDateOfBirth(String dateOfBirth) {
 		DateOfBirth = dateOfBirth;
 	}
 
@@ -60,21 +60,20 @@ public class Employee {
 		TaxCode = taxCode;
 	}
 
-	public String getManagerId() {
-		return ManagerId;
-	}
-
-	public void setManagerId(String managerId) {
-		ManagerId = managerId;
-	}
-
-	public String getSalary() {
+	public Integer getSalary() {
 		return Salary;
 	}
 
-	public void setSalary(String salary) {
+	public void setSalary(Integer salary) {
 		Salary = salary;
 	}
-	
-	
+
+	public Integer getManagerId() {
+		return ManagerId;
+	}
+
+	public void setManagerId(Integer managerId) {
+		ManagerId = managerId;
+	}
+
 }

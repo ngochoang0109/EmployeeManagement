@@ -1,6 +1,7 @@
 package com.employeemanagement.app.controller;
 
 import com.employeemanagement.app.dao.EmployeeDA;
+import com.employeemanagement.app.helpers.ApiRes;
 import com.employeemanagement.app.request.EmployeeReq;
 import com.employeemanagement.app.request.FilterReq;
 import com.employeemanagement.app.request.LoginReq;
@@ -17,12 +18,13 @@ public class EmployeeController {
 	@Autowired
 	private EmployeeService objBL;
 
-	@RequestMapping(value = "/getlist", method = RequestMethod.POST, 
-			consumes = "application/json", 
-			produces = "application/json; charset=utf-8")
+	@RequestMapping(value = "/getlist", method = RequestMethod.POST, consumes = "application/json", produces = "application/json; charset=utf-8")
 	public ResponseEntity<Object> getList(HttpSession session, @RequestBody FilterReq req) throws Exception {
 		if (!EmployeeDA.GetDataSource(session)) {
-			return ResponseEntity.status(400).body("Bad request");
+			ApiRes<Object> apiRes = new ApiRes<Object>();
+			apiRes.setError(true);
+			apiRes.setErrorReason("Vui lòng đăng nhập");
+			return ResponseEntity.ok(apiRes);
 		}
 		return ResponseEntity.ok(objBL.getlist(req));
 	}
