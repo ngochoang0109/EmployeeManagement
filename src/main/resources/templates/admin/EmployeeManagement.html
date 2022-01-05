@@ -82,6 +82,10 @@
 								</button>
 							</div>
 							<div class="modal-body">
+								<div class="form-group" style="display: none;">
+									<label for="id">id</label> <input type="id" id="empId" class="form-control"
+										name="id" required />
+								</div>
 								<div class="form-group">
 									<label for="name">Name</label> <input type="name" id="empName" class="form-control"
 										name="name" required />
@@ -91,6 +95,7 @@
 										class="form-control" name="email" required />
 								</div>
 								<label for="start">Ngày sinh:</label>
+								<br>
 								<input type="date" placeholder="ngày sinh" id="empDateOfBirth" name="dateOfBirth"
 									value="2021-11-22" min="1900-01-01" max="2021-12-31">
 
@@ -104,6 +109,10 @@
 									<label for="name">Lương</label> <input id="empSalary" type="salary"
 										class="form-control" name="salary" required />
 								</div>
+								<div class="form-group">
+									<label for="managerId">Mã Trưởng Phòng</label> <input id="empManagerId" type="salary"
+										class="form-control" name="managerId" required />
+								</div>
 
 								<div class="form-group">
 									<label for="name">Chọn Mã phòng:</label>
@@ -112,8 +121,6 @@
 										<option value="ACC">Tài chính</option>
 										<option value="IT">CNTT</option>
 									</select>
-
-
 								</div>
 
 								<div class="modal-footer">

@@ -86,7 +86,7 @@ public class EmployeeDA {
 				proc.registerOutParameter(1, OracleTypes.CURSOR);
 				proc.setObject(2, strId);
 				proc.execute();
-				ResultSet results = (ResultSet) proc.getObject(2);
+				ResultSet results = (ResultSet) proc.getObject(1);
 				while (results.next()) {
 					obj = parseInfor(results, false);
 				}

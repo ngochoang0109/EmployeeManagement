@@ -30,7 +30,7 @@ $(document).ready(function() {
 						//taiKhoanRow += '<td>' +
 						taiKhoanRow += '<td>' + '<input style="display:none" id="idTaiKhoan" value=' + emp.id + '>' +
 							'<button class="btn btn-primary btnUpdateEmp" id="Update.' + emp.id + '" >Cập nhật</button>' +
-							'<button class="btn btn-danger btnDelete" >Xóa</button></td>';
+							'<button class="btn btn-danger btnDelete" id="Delete.' + emp.id + '" >Xóa</button></td>';
 						$('.taiKhoanTable tbody').append(taiKhoanRow);
 
 					});
@@ -64,6 +64,13 @@ $(document).ready(function() {
 		ajaxLogout();
 	});
 
+// reset table after post, put, filter
+	function resetData() {
+		var page = $('li.active').children().text();
+		$('.taiKhoanTable tbody tr').remove();
+		$('.pagination li').remove();
+		ajaxGet(page);
+	};
 	function ajaxLogout() {
 		var data = {};
 		// do post
@@ -128,6 +135,7 @@ $(document).ready(function() {
 				if (response.object === true) {
 					$('#nhanVienModal').modal('hide');
 					alert("Thêm thành công");
+					resetData();
 				} else {
 					alert(response.errorReason);
 				}
@@ -143,7 +151,7 @@ $(document).ready(function() {
 	$(document).on('click', '.btnUpdateEmp', function(event) {
 		var editId = $(this).attr('id');
 		var field = editId.split('.');
-		var EmpId= field[1];
+		var EmpId = field[1];
 		var data = { id: EmpId };
 		$.ajax({
 			type: 'POST',
@@ -155,6 +163,8 @@ $(document).ready(function() {
 
 				console.log(result)
 				var modal = $('#nhanVienModal');
+				modal.find('.modal-body #empId').val(result.object.id);
+				modal.find('.modal-body #empManagerId').val(result.object.managerId);
 				modal.find('.modal-body #empName').val(result.object.name);
 				modal.find('.modal-body #empEmail').val(result.object.email);
 				modal.find('.modal-body #empTaxCode').val(result.object.taxCode);
@@ -169,6 +179,7 @@ $(document).ready(function() {
 				$('#btnSaveSubmit').show();
 				$('#btnAddSubmit').hide();
 				$('#nhanVienModal').modal('show');
+				resetData()
 
 
 			},
@@ -184,63 +195,62 @@ $(document).ready(function() {
 
 
 		$('#btnSaveSubmit').unbind().click(function() {
+			var data = JSON.stringify($('.nhanVienForm').serializeJSON());
+			console.log(data);
 
-			var formData = new FormData();
-
-
-			var name = $('#nameGrammar').val();
-			var contentMarkdown = simplemde.value(); //get from textarea markdown
-			var contentHTML = simplemde.options.previewRender(contentMarkdown);
-
-
-
-
-			formData.append("idGrammar", idBaiGrammar);
-			formData.append("name", name);
-			formData.append("contentMarkdown", contentMarkdown);
-			formData.append("contentHtml", contentHTML);
-
-
+			// do post
 			$.ajax({
-				data: formData,
-				type: 'POST',
-				url: "http://localhost:8080/api/admin/grammar/update",
-				enctype: 'multipart/form-data',
-				contentType: false,
-				cache: false,
-				processData: false,
-
-				success: function(data) {
-					$('#grammarModal').modal('hide');
-					$('#info-success').text("Cập nhật bài grammar thành công");
-					loadAllGrammar();
+				async: false,
+				type: "POST",
+				contentType: "application/json",
+				url: "http://localhost:8080/api/employee/update",
+				data: data,
+				success: function(response) {
+					if (response.object === true) {
+						$('#nhanVienModal').modal('hide');
+						alert("Cập nhật thành công");
+						resetData();
+					} else {
+						alert(response.errorReason);
+					}
 
 				},
-
 				error: function(e) {
-					alert("error");
+					alert("Error!")
 					console.log("ERROR: ", e);
 				}
 			});
 		});
 	});
 	// delete request
-	$(document).on("click", ".btnXoa", function() {
+	$(document).on("click", ".btnDelete", function() {
 
-		var taiKhoanId = $(this).parent().prev().children().val();
+		var editId = $(this).attr('id');
+		var field = editId.split('.');
+		var EmpId = field[1];
+		
+		var data = { id: EmpId };
 		var confirmation = confirm("Bạn chắc chắn xóa tài khoản này ?");
 		if (confirmation) {
 			$.ajax({
-				type: "DELETE",
-				url: "http://localhost:8080/api/admin/tai-khoan/delete/" + taiKhoanId,
-				success: function(resultMsg) {
-					alert("Xóa thành công")
-					resetData();
+				type: "POST",
+				contentType: "application/json",
+				url: "http://localhost:8080/api/employee/delete",
+				data: JSON.stringify(data),
+				success: function(response) {
+					if (response.object === true) {
+						$('#nhanVienModal').modal('hide');
+						alert("Xóa thành công");
+						resetData();
+					} else {
+						alert(response.errorReason);
+					}
 				},
 				error: function(e) {
 					console.log("ERROR: ", e);
 				}
 			});
+			
 		}
 	});
 
