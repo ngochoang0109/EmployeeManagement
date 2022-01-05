@@ -63,12 +63,28 @@ public class EmployeeDA {
 		return bolResult;
 	}
 
-	public Boolean delete(String strId) throws Exception {
+	public Boolean delete(int strId) throws Exception {
 		Boolean bolResult = false;
 		try (Connection conn = databaseConfig.getConnection()) {
 			try {
-				bolResult = delete(conn, strId);
+				delete(conn, strId);
 				conn.commit();
+			} catch (Exception e) {
+				conn.rollback();
+				e.printStackTrace();
+				throw new RuntimeException(e);
+			}
+		}
+		return bolResult;
+	}
+	
+	public boolean delEmp(int id) throws SQLException {
+		Boolean bolResult = false;
+		try (Connection conn = databaseConfig.getConnection()) {
+			try {
+				delete(conn, id);
+				conn.commit();
+				bolResult = true;
 			} catch (Exception e) {
 				conn.rollback();
 				e.printStackTrace();
@@ -113,7 +129,7 @@ public class EmployeeDA {
 		try (Connection conn = databaseConfig.getConnection()) {
 			PGobject objPGobject = new org.postgresql.util.PGobject();
 			objPGobject.setType("refcursor");
-			String callProc = "{call DBSECURITYGR06.Employee_getlist(?,?)}";
+			String callProc = "{call DBSECURITYGR06.employee_getlist(?,?)}";
 			try (CallableStatement proc = conn.prepareCall(callProc)) {
 
 				proc.setString(1, strKeyword);
@@ -167,13 +183,11 @@ public class EmployeeDA {
 		}
 	}
 
-	private Boolean delete(Connection conn, String strId) throws Exception {
-		String callProc = "{? = call pim.pim_Employee_del(?)}";
+	private void delete(Connection conn, int strId) throws Exception {
+		String callProc = "{call DBSECURITYGR06.employee_del(?)}";
 		try (CallableStatement proc = conn.prepareCall(callProc)) {
-			proc.registerOutParameter(1, Types.BOOLEAN);
-			proc.setObject(2, strId);
+			proc.setObject(1, strId);
 			proc.execute();
-			return Boolean.parseBoolean(proc.getObject(1).toString());
 		}
 	}
 

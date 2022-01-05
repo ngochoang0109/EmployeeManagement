@@ -18,7 +18,10 @@ public class EmployeeController {
 	@Autowired
 	private EmployeeService objBL;
 
-	@RequestMapping(value = "/getlist", method = RequestMethod.POST, consumes = "application/json", produces = "application/json; charset=utf-8")
+	@RequestMapping(value = "/getlist", 
+			method = RequestMethod.POST, 
+			consumes = "application/json", 
+			produces = "application/json; charset=utf-8")
 	public ResponseEntity<Object> getList(HttpSession session, @RequestBody FilterReq req) throws Exception {
 		if (!EmployeeDA.GetDataSource(session)) {
 			ApiRes<Object> apiRes = new ApiRes<Object>();
@@ -46,4 +49,19 @@ public class EmployeeController {
 	public ResponseEntity<Object> logout(HttpSession session) {
 		return ResponseEntity.ok(objBL.logout(session));
 	}
+	
+	@RequestMapping(value = "/delete", 
+			method = RequestMethod.POST, 
+			consumes = "application/json", 
+			produces = "application/json; charset=utf-8")
+	public ResponseEntity<Object> delete(@RequestBody EmployeeReq employeeReq, HttpSession session){
+		if (!EmployeeDA.GetDataSource(session)) {
+			ApiRes<Object> apiRes = new ApiRes<Object>();
+			apiRes.setError(true);
+			apiRes.setErrorReason("Vui lòng đăng nhập");
+			return ResponseEntity.ok(apiRes);
+		}
+		return ResponseEntity.ok(objBL.delEmp(employeeReq.getId()));
+	}
+	
 }

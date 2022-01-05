@@ -80,4 +80,16 @@ public class EmployeeService {
 		}
 		return apiRes;
 	}
+	
+	public ApiRes<Object> delEmp(int id) {
+		ApiRes<Object> apiRes = new ApiRes<Object>();
+		try {
+			employeeDA.delEmp(id);
+			apiRes.setObject(true);
+		} catch (Exception e) {
+			apiRes.setError(true);
+			apiRes.setErrorReason(e.getMessage());
+		}
+		return apiRes;
+	}
 }

@@ -8,8 +8,6 @@ import org.springframework.context.annotation.Configuration;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-import java.util.HashMap;
-import java.util.Map;
 
 @Configuration
 public class DatabaseConfig {
