@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.employeemanagement.app.request.EmployeeReq;
 import com.employeemanagement.app.request.LoginReq;
+
 import org.postgresql.util.PGobject;
 
 import javax.servlet.http.HttpSession;
@@ -16,7 +17,6 @@ import org.springframework.stereotype.Service;
 import com.employeemanagement.app.entities.Employee;
 
 import oracle.jdbc.OracleTypes;
-import oracle.sql.TIMESTAMP;
 
 @Service
 public class EmployeeDA {
@@ -46,43 +46,25 @@ public class EmployeeDA {
 		return bolResult;
 	}
 
-	public Boolean update(Employee obj, Boolean bolIsUpdate) throws Exception {
-		Boolean bolResult = false;
+	public void update(Employee obj, Boolean bolIsUpdate) throws Exception {
 		try (Connection conn = databaseConfig.getConnection()) {
 			try {
 				if (bolIsUpdate)
 					update(conn, obj);
 				conn.commit();
-				bolResult = true;
 			} catch (Exception e) {
 				conn.rollback();
 				e.printStackTrace();
 				throw new RuntimeException(e);
 			}
 		}
-		return bolResult;
-	}
-
-	public Boolean delete(int strId) throws Exception {
-		Boolean bolResult = false;
-		try (Connection conn = databaseConfig.getConnection()) {
-			try {
-				delete(conn, strId);
-				conn.commit();
-			} catch (Exception e) {
-				conn.rollback();
-				e.printStackTrace();
-				throw new RuntimeException(e);
-			}
-		}
-		return bolResult;
 	}
 	
 	public boolean delEmp(int id) throws SQLException {
 		Boolean bolResult = false;
 		try (Connection conn = databaseConfig.getConnection()) {
 			try {
-				delete(conn, id);
+				this.delete(conn, id);
 				conn.commit();
 				bolResult = true;
 			} catch (Exception e) {
@@ -94,23 +76,15 @@ public class EmployeeDA {
 		return bolResult;
 	}
 
-	public Employee getInfor(String strId, String strLocaleCcode) throws Exception {
-		return getInfor(strId, strLocaleCcode, true);
-	}
-
-	public Employee getInfor(String strId, String strLocaleCcode, Boolean bolLoadRelation) throws Exception {
+	public Employee getInfor(int id) throws Exception {
 		Employee obj = null;
 		try (Connection conn = databaseConfig.getConnection()) {
-			PGobject objPGobject = new org.postgresql.util.PGobject();
-			objPGobject.setType("refcursor");
-			String callProc = "{? = call pim.pim_Employee_getinfor(?,?,?)}";
+			String callProc = "{call DBSECURITYGR06.getEmpById(?,?)}";
 			try (CallableStatement proc = conn.prepareCall(callProc)) {
-				proc.registerOutParameter(1, Types.OTHER);
-				proc.setObject(2, objPGobject);
-				proc.setObject(3, strId);
-				proc.setObject(4, strLocaleCcode);
+				proc.setInt(1, id);
+				proc.registerOutParameter(2, OracleTypes.CURSOR);
 				proc.execute();
-				ResultSet results = (ResultSet) proc.getObject(1);
+				ResultSet results = (ResultSet) proc.getObject(2);
 				while (results.next()) {
 					obj = parseInfor(results, true);
 				}
@@ -156,7 +130,6 @@ public class EmployeeDA {
 	private void add(Connection conn, Employee obj) throws Exception {
 		String callProc = "{call DBSECURITYGR06.Employee_add(?,?,?,?,?,?,?)}";
 		try (CallableStatement proc = conn.prepareCall(callProc)) {
-
 			proc.setObject(1, obj.getName());
 			proc.setObject(2, obj.getDepartmentId());
 			proc.setObject(3, obj.getTaxCode());
@@ -168,18 +141,18 @@ public class EmployeeDA {
 		}
 	}
 
-	private Boolean update(Connection conn, Employee obj) throws Exception {
-		String callProc = "{? = call pim.pim_Employee_upd(?,?,?)}";
+	private void update(Connection conn, Employee obj) throws Exception {
+		String callProc = "{call DBSECURITYGR06.udpateEmp(?,?,?,?,?,?,?,?)}";
 		try (CallableStatement proc = conn.prepareCall(callProc)) {
-			proc.registerOutParameter(1, Types.BOOLEAN);
-			proc.setObject(2, obj.getName());
-			proc.setObject(3, obj.getDateOfBirth());
-			proc.setObject(4, obj.getName());
-			proc.setObject(5, obj.getEmail());
-			proc.setObject(6, obj.getTaxCode());
-			proc.setObject(7, obj.getDepartmentId());
+			proc.setInt(1, obj.getId());
+			proc.setString(2, obj.getName());
+			proc.setString(3, obj.getDepartmentId());
+			proc.setString(4, obj.getDateOfBirth());
+			proc.setString(5, obj.getTaxCode());
+			proc.setInt(6, obj.getSalary());
+			proc.setString(7, obj.getEmail());
+			proc.setInt(8, obj.getManagerId());
 			proc.execute();
-			return Boolean.parseBoolean(proc.getObject(1).toString());
 		}
 	}
 

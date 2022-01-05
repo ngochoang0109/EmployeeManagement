@@ -92,4 +92,30 @@ public class EmployeeService {
 		}
 		return apiRes;
 	}
+	
+	public ApiRes<Object> getEmpById(int id){
+		ApiRes<Object> apiRes= new ApiRes<Object>();
+		try {
+			Employee employee= employeeDA.getInfor(id);
+			apiRes.setObject(employee);
+		} catch (Exception e) {
+			e.printStackTrace();
+			apiRes.setError(true);
+			apiRes.setErrorReason(e.getMessage());
+		}
+		return apiRes;
+	}
+	
+	public ApiRes<Object> updateEmp(Employee employee, boolean isUpdate){
+		ApiRes<Object> apiRes= new ApiRes<Object>();
+		try {
+			employeeDA.update(employee, isUpdate);
+			apiRes.setObject(employee);
+		} catch (Exception e) {
+			e.printStackTrace();
+			apiRes.setError(true);
+			apiRes.setErrorReason(e.getMessage());
+		}
+		return apiRes;
+	}
 }
