@@ -29,12 +29,31 @@ public class EmployeeController {
 		return ResponseEntity.ok(objBL.getlist(req));
 	}
 
+	@RequestMapping(value = "/getinfor", method = RequestMethod.POST, consumes = "application/json", produces = "application/json; charset=utf-8")
+	public ResponseEntity<Object> getInfor(HttpSession session, @RequestBody EmployeeReq req) throws Exception {
+		if (!EmployeeDA.GetDataSource(session)) {
+			ApiRes<Object> apiRes = new ApiRes<Object>();
+			apiRes.setError(true);
+			apiRes.setErrorReason("Vui lòng đăng nhập");
+			return ResponseEntity.ok(apiRes);
+		}
+		return ResponseEntity.ok(objBL.getInfor(req));
+	}
+
 	@RequestMapping(value = "/add", method = RequestMethod.POST, consumes = "application/json", produces = "application/json; charset=utf-8")
 	public ResponseEntity<Object> add(HttpSession session, @RequestBody EmployeeReq req) throws Exception {
 		if (!EmployeeDA.GetDataSource(session)) {
 			return ResponseEntity.status(400).body("Bad request");
 		}
 		return ResponseEntity.ok(objBL.add(req));
+	}
+
+	@RequestMapping(value = "/update", method = RequestMethod.POST, consumes = "application/json", produces = "application/json; charset=utf-8")
+	public ResponseEntity<Object> update(HttpSession session, @RequestBody EmployeeReq req) throws Exception {
+		if (!EmployeeDA.GetDataSource(session)) {
+			return ResponseEntity.status(400).body("Bad request");
+		}
+		return ResponseEntity.ok(objBL.update(req));
 	}
 
 	@PostMapping("login")

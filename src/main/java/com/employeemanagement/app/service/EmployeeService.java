@@ -39,10 +39,34 @@ public class EmployeeService {
 		return apiRes;
 	}
 
+	public ApiRes<Object> getInfor(EmployeeReq req) {
+		ApiRes<Object> apiRes = new ApiRes<Object>();
+		try {
+			Employee objEmployee = employeeDA.getInfor(req.getId());
+			apiRes.setObject(objEmployee);
+		} catch (Exception e) {
+			apiRes.setError(true);
+			apiRes.setErrorReason(e.getMessage());
+		}
+		return apiRes;
+	}
+
 	public ApiRes<Object> add(EmployeeReq req) {
 		ApiRes<Object> apiRes = new ApiRes<Object>();
 		try {
 			employeeDA.add(req);
+			apiRes.setObject(true);
+		} catch (Exception e) {
+			apiRes.setError(true);
+			apiRes.setErrorReason(e.getMessage());
+		}
+		return apiRes;
+	}
+
+	public ApiRes<Object> update(EmployeeReq req) {
+		ApiRes<Object> apiRes = new ApiRes<Object>();
+		try {
+			employeeDA.update(req);
 			apiRes.setObject(true);
 		} catch (Exception e) {
 			apiRes.setError(true);

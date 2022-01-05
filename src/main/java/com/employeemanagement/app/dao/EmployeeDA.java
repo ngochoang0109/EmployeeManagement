@@ -46,22 +46,13 @@ public class EmployeeDA {
 		return bolResult;
 	}
 
-	public Boolean update(Employee obj, Boolean bolIsUpdate) throws Exception {
-		Boolean bolResult = false;
-		try (Connection conn = databaseConfig.getConnection()) {
-			try {
-				if (bolIsUpdate)
-					update(conn, obj);
-				conn.commit();
-				bolResult = true;
-			} catch (Exception e) {
-				conn.rollback();
-				e.printStackTrace();
-				throw new RuntimeException(e);
-			}
-		}
-		return bolResult;
-	}
+	/*
+	 * public Boolean update(Employee obj) throws Exception { Boolean bolResult =
+	 * false; try (Connection conn = databaseConfig.getConnection()) { try {
+	 * update(conn, obj); conn.commit(); bolResult = true; } catch (Exception e) {
+	 * conn.rollback(); e.printStackTrace(); throw new RuntimeException(e); } }
+	 * return bolResult; }
+	 */
 
 	public Boolean delete(String strId) throws Exception {
 		Boolean bolResult = false;
@@ -78,25 +69,19 @@ public class EmployeeDA {
 		return bolResult;
 	}
 
-	public Employee getInfor(String strId, String strLocaleCcode) throws Exception {
-		return getInfor(strId, strLocaleCcode, true);
-	}
-
-	public Employee getInfor(String strId, String strLocaleCcode, Boolean bolLoadRelation) throws Exception {
+	public Employee getInfor(Integer strId) throws Exception {
 		Employee obj = null;
 		try (Connection conn = databaseConfig.getConnection()) {
 			PGobject objPGobject = new org.postgresql.util.PGobject();
 			objPGobject.setType("refcursor");
-			String callProc = "{? = call pim.pim_Employee_getinfor(?,?,?)}";
+			String callProc = "{call DBSECURITYGR06.Employee_getinfor(?,?)}";
 			try (CallableStatement proc = conn.prepareCall(callProc)) {
-				proc.registerOutParameter(1, Types.OTHER);
-				proc.setObject(2, objPGobject);
-				proc.setObject(3, strId);
-				proc.setObject(4, strLocaleCcode);
+				proc.registerOutParameter(1, OracleTypes.CURSOR);
+				proc.setObject(2, strId);
 				proc.execute();
 				ResultSet results = (ResultSet) proc.getObject(1);
 				while (results.next()) {
-					obj = parseInfor(results, true);
+					obj = parseInfor(results, false);
 				}
 				conn.commit();
 			} catch (Exception e) {
@@ -152,20 +137,17 @@ public class EmployeeDA {
 		}
 	}
 
-	private Boolean update(Connection conn, Employee obj) throws Exception {
-		String callProc = "{? = call pim.pim_Employee_upd(?,?,?)}";
-		try (CallableStatement proc = conn.prepareCall(callProc)) {
-			proc.registerOutParameter(1, Types.BOOLEAN);
-			proc.setObject(2, obj.getName());
-			proc.setObject(3, obj.getDateOfBirth());
-			proc.setObject(4, obj.getName());
-			proc.setObject(5, obj.getEmail());
-			proc.setObject(6, obj.getTaxCode());
-			proc.setObject(7, obj.getDepartmentId());
-			proc.execute();
-			return Boolean.parseBoolean(proc.getObject(1).toString());
-		}
-	}
+	/*
+	 * private Boolean update(Connection conn, Employee obj) throws Exception {
+	 * String callProc = "{call DBSECURITYGR06.Employee_upd(?,?,?,?,?,?,?)}"; try
+	 * (CallableStatement proc = conn.prepareCall(callProc)) {
+	 * proc.registerOutParameter(1, Types.BOOLEAN); proc.setObject(1,
+	 * obj.getName()); proc.setObject(2, obj.getDepartmentId()); proc.setObject(3,
+	 * obj.getTaxCode()); proc.setObject(4, obj.getSalary()); proc.setObject(5,
+	 * obj.getEmail()); proc.setObject(6, obj.getManagerId()); proc.setObject(7,
+	 * obj.getDateOfBirth()); proc.execute(); return
+	 * Boolean.parseBoolean(proc.getObject(1).toString()); } }
+	 */
 
 	private Boolean delete(Connection conn, String strId) throws Exception {
 		String callProc = "{? = call pim.pim_Employee_del(?)}";
