@@ -34,8 +34,7 @@ $(document).ready(function() {
 				}
 			},
 			error: function(e) {
-				alert("Error!",e)
-				console.log("ERROR: ", e);
+				alert("username hoặc password không đúng");
 			}
 		});
 
