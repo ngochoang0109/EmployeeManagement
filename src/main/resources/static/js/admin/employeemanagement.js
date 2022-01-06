@@ -110,14 +110,11 @@ $(document).ready(function() {
 	$(document).on('click', '#btnAddSubmit', function(event) {
 
 		ajaxAddNhanVien();
-		ajaxGet(1);
+		
 	});
 	// xác nhận thêm viên
 	$(document).on('click', '#btnSaveSubmit', function(event) {
-
-
 		ajaxSaveNhanVien();
-		ajaxGet(1);
 	});
 
 	function ajaxAddNhanVien() {
