@@ -17,6 +17,7 @@ $(document).ready(function() {
 				}
 				else {
 					console.log(result)
+					$(".taiKhoanTable tbody").empty();
 					$.each(result.object, function(i, emp) {
 						var taiKhoanRow = '<tr>' +
 							'<td>' + emp.id + '</td>' +
@@ -114,7 +115,10 @@ $(document).ready(function() {
 	});
 	// xác nhận thêm viên
 	$(document).on('click', '#btnSaveSubmit', function(event) {
+
+
 		ajaxSaveNhanVien();
+		
 	});
 
 	function ajaxAddNhanVien() {
