@@ -27,7 +27,16 @@
 					<div class="collapse navbar-collapse" id="navbarSupportedContent">
 						<div class="d-flex ml-auto flex-column flex-lg-row align-items-center">
 							<ul class="nav navbar-nav navbar-right">
-
+								<li class="dropdown nav-item active">
+									<a class="dropdown-toggle nav-link " data-toggle="dropdown">Quản lý
+										<b class="caret"></b>
+									</a>
+									<ul class="dropdown-menu">
+										
+										<li><a class="nav-link" th:href="@{/admin/employee}">Quản lý nhân viên</a></li>
+										<li><a class="nav-link" th:href="@{/admin/audit}">Lịch sử chỉnh sửa</a></li>
+									</ul>
+								</li>
 
 								<li>
 									<a id="btnLogout"><span class="glyphicon glyphicon-log-out"></span>
