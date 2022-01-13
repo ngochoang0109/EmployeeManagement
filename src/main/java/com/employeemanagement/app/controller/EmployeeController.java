@@ -43,7 +43,10 @@ public class EmployeeController {
     @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = "application/json", produces = "application/json; charset=utf-8")
     public ResponseEntity<Object> add(HttpSession session, @RequestBody EmployeeReq req) throws Exception {
         if (!EmployeeDA.GetDataSource(session)) {
-            return ResponseEntity.status(400).body("Bad request");
+        	ApiRes<Object> apiRes = new ApiRes<Object>();
+            apiRes.setError(true);
+            apiRes.setErrorReason("Vui lòng đăng nhập");
+            return ResponseEntity.ok(apiRes);
         }
         return ResponseEntity.ok(objBL.add(req));
     }

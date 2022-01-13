@@ -126,15 +126,14 @@ public class EmployeeDA {
     }
 
     private void add(Connection conn, Employee obj) throws Exception {
-        String callProc = "{call DBSECURITYGR06.Employee_add(?,?,?,?,?,?,?)}";
+        String callProc = "{call DBSECURITYGR06.employee_add(?,?,?,?,?,?)}";
         try (CallableStatement proc = conn.prepareCall(callProc)) {
             proc.setObject(1, obj.getName());
             proc.setObject(2, obj.getDepartmentId());
             proc.setObject(3, obj.getTaxCode());
             proc.setObject(4, obj.getSalary());
             proc.setObject(5, obj.getEmail());
-            proc.setObject(6, obj.getManagerId());
-            proc.setObject(7, obj.getDateOfBirth());
+            proc.setObject(6, obj.getDateOfBirth());
             proc.execute();
         }
     }
